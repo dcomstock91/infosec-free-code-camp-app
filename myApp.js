@@ -9,7 +9,7 @@ app.use(
 app.use(
   helmet.frameguard({
     action: 'deny'
-  })
+  }),
   );
 app.use(
   helmet.xssFilter()
@@ -23,15 +23,23 @@ app.use(
 app.use(
   helmet.hsts({
     maxAge: timeInSeconds, force: true
-  })
+  }),
   );
 app.use(
-  helmet.dnsPrefetchControl
-  ()
+  helmet.dnsPrefetchControl()
   );
   app.use(
     helmet.noCache()
   );
+  app.use(
+    helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'",'trusted-cdn.com'],
+    },
+  }),
+  );
+
 
 
 

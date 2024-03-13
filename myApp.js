@@ -3,44 +3,27 @@ const helmet = require('helmet');
 const app = express();
 const timeInSeconds = 7776000;
 
-app.use(
-  helmet.hidePoweredBy()
-  );
-app.use(
-  helmet.frameguard({
+
+app.use(helmet({
+  frameguard: {     //configure
     action: 'deny'
-  }),
-  );
-app.use(
-  helmet.xssFilter()
-  );
-app.use(
-  helmet.noSniff()
-  );
-app.use(
-  helmet.ieNoOpen()
-  );
-app.use(
-  helmet.hsts({
-    maxAge: timeInSeconds, force: true
-  }),
-  );
-app.use(
-  helmet.dnsPrefetchControl()
-  );
-  app.use(
-    helmet.noCache()
-  );
-  app.use(
-    helmet.contentSecurityPolicy({
+  },
+  contentSecurityPolicy: {    //enable and configure
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'",'trusted-cdn.com'],
-    },
-  }),
-  );
-
-
+      styleSrc: ["'self'",'trusted-cdn.com']
+   }
+  },
+  hsts: {
+    maxAge: timeInSeconds, force: true
+  },
+  noCache: true,     //enable
+  dnsPrefetchControl: true,   //enable
+  hidePoweredBy: true,
+  ieNoOpen: true,
+  xssFilter: true,
+  noSniff: true,
+}))
 
 
 
